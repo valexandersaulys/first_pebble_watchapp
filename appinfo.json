@@ -1,0 +1,19 @@
+{
+  "uuid": "8888255b-800b-4925-b7b5-9b27084776e2",
+  "shortName": "Tutorial1",
+  "longName": "Tutorial1",
+  "companyName": "My_First_Tutorial!",
+  "versionCode": 1,
+  "versionLabel": "1.0",
+  "sdkVersion": "3",
+  "targetPlatforms": ["aplite", "basalt"],
+  "watchapp": {
+    "watchface": true
+  },
+  "appKeys": {
+    "dummy": 0
+  },
+  "resources": {
+    "media": []
+  }
+}
