@@ -2,6 +2,10 @@
 
 static Window *s_main_window;   // This will be a static pointer to the Window object
 static TextLayer *s_time_layer; // This will hold the text for the watchface
+static GFont s_time_font;
+
+static BitmapLayer *s_background_layer;
+static GBitmap *s_background_bitmap;
 
 /* We create an event service that can access the current time by creating a function
    that listens to the time changing. This can be every second, minute, or hour with 
@@ -33,13 +37,14 @@ static void update_time() {
 
 static void main_window_load(Window *window) {
   // First the time TextLayer is created
-  s_time_layer = text_layer_create(GRect(0,55,144,50));
+  s_time_layer = text_layer_create(GRect(5,52,139,50));
   text_layer_set_background_color(s_time_layer, GColorClear);
   text_layer_set_text_color(s_time_layer, GColorBlack);
   text_layer_set_text(s_time_layer, "00:00");
 
   // Then we so some playing around with the text face
-  text_layer_set_font(s_time_layer, fonts_get_system_font(FONT_KEY_BITHAM_42_BOLD));
+  s_time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_PERFECT_DOS_48));  // Custom Font
+  text_layer_set_font(s_time_layer, s_time_font);
   text_layer_set_text_alignment(s_time_layer, GTextAlignmentCenter);
 
   // Then we add it as a child layer to the root (default) layer
@@ -51,6 +56,7 @@ static void main_window_load(Window *window) {
 static void main_window_unload(Window *window) {
   // After its changed, we destroy the TextLayer
   text_layer_destroy(s_time_layer);
+  fonts_unload_custom_font(s_time_font);
 }
 
 static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {

@@ -2,7 +2,7 @@
   "uuid": "8888255b-800b-4925-b7b5-9b27084776e2",
   "shortName": "Tutorial1",
   "longName": "Tutorial1",
-  "companyName": "My_First_Tutorial!",
+  "companyName": "My_First_Pebble_App!",
   "versionCode": 1,
   "versionLabel": "1.0",
   "sdkVersion": "3",
@@ -14,6 +14,18 @@
     "dummy": 0
   },
   "resources": {
-    "media": []
+     "media": [
+	   {
+		 "type": "font",
+		 "name": "FONT_PERFECT_DOS_48",
+		 "file": "fonts/perfect-dos-vga.ttf",
+	     "compatibility": "2.7"
+	   },
+	   {
+	     "type": "png",
+		 "name": "IMAGE_BACKGROUND",
+		 "file": "images/background.png"
+	   }
+	  ]
   }
 }
