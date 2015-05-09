@@ -3,6 +3,30 @@
 static Window *s_main_window;   // This will be a static pointer to the Window object
 static TextLayer *s_time_layer; // This will hold the text for the watchface
 
+/* We create an event service that can access the current time by creating a function
+   that listens to the time changing. This can be every second, minute, or hour with 
+   expected battery costs if it listens a lot */
+
+static void update_time() {
+  // First we need to get a tm struture
+  time_t temp = time(NULL);
+  struct tm *tick_time = localtime(&temp);
+
+  // Then we create a long=lived buffer
+  static char buffer[] = "00:00";
+
+  // Finally we write the current hours and minutes into the buffer
+  if(clock_is_24h_style() == true) {
+	// We use the 24 hour format if this option is clicked
+	strftime(buffer, sizeof("00:00"), "%H:%M", tick_time);
+  } else {
+	// And the 12 hour time if thats clicked
+	strftime( buffer, sizeof("00:00"), "%I:%M", tick_time );
+  }
+
+  // Display this time on the TextLayer
+  text_layer_set_text(s_time_layer, buffer);
+}
 
 /* To create an instance of Window to assign to the above pointer, we 
    create two pointers to pointer to it. */
@@ -20,12 +44,18 @@ static void main_window_load(Window *window) {
 
   // Then we add it as a child layer to the root (default) layer
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_time_layer));
+
+  update_time();
 }
 
 static void main_window_unload(Window *window) {
-
+  // After its changed, we destroy the TextLayer
+  text_layer_destroy(s_time_layer);
 }
 
+static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
+  update_time();
+}
 
 static void init() {
   // First we create the main Window element and assign it to the pointer
@@ -39,6 +69,8 @@ static void init() {
 
   // Then we tell the Pebble to show the window on the watch, with animated=true
   window_stack_push(s_main_window, true);
+
+  tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
 }
 
 static void deinit() {
