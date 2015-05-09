@@ -48,6 +48,13 @@ static void main_window_load(Window *window) {
   text_layer_set_text_color(s_time_layer, GColorBlack);
   text_layer_set_text(s_time_layer, "00:00");
 
+  //Create GFont
+  s_time_font = fonts_load_custom_font(resource_get_handle(RESOURCE_ID_FONT_PERFECT_DOS_48));
+ 
+  //Apply to TextLayer
+  text_layer_set_font(s_time_layer, s_time_font);
+  text_layer_set_text_alignment(s_time_layer, GTextAlignmentCenter);
+  
   // Then we add it as a child layer to the root (default) layer
   layer_add_child(window_get_root_layer(window), text_layer_get_layer(s_time_layer));
 
